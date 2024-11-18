@@ -1,0 +1,149 @@
+/* Conteneur principal pour la liste de produits */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 35px;
+    padding: 20px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+/* Style pour chaque carte de produit */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-top: 100px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+/* Style pour l'image du produit */
+.product-image {
+    width: 120px;
+    height: 150px;
+    margin-bottom: 10px;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Style pour le nom du produit (lien sans soulignement) */
+.product-card a {
+    text-decoration: none !important; /* Supprime le soulignement */
+    color: #7c9c5f; /* Couleur du texte */
+    font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+    margin: 10px 0 5px 0;
+}
+
+/* Style pour le prix */
+.price {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #baa893;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Style pour la description */
+.description {
+    font-size: 0.9em;
+    color: #361b13;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Section secondaire */
+.secondContainer {
+    padding: 2rem;
+    text-align: center;
+}
+
+.secondContainer h2 {
+    font-size: 2rem;
+    color: #7c9c5f;
+    margin-bottom: 2rem;
+}
+
+/* Style pour disposer les images sur une seule ligne */
+.picture1, .picture1_2, .picture1_3 {
+    width: 30%; /* Ajustez ce pourcentage selon l’espace disponible */
+    display: inline-block;
+    text-align: center;
+    margin: 0 1rem;
+}
+
+.picture1 img, .picture1_2 img, .picture1_3 img {
+    width: 100%;
+    height: 200px; /* Hauteur fixe pour uniformiser la taille */
+    object-fit: cover; /* Ajuste l’image sans déformer les proportions */
+    border: 2px solid #7c9c5f;
+    border-radius: 2%;
+}
+
+/* Section d’appel à l’action (CTA) */
+.cta-section {
+    background-color: #baa893;
+    color: #361b13;
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+.cta-section h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.cta-button {
+    background-color: #7c9c5f;
+    color: #333;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #fff;
+    color: #7c9c5f;
+}
+
+/* Carousel */
+.carousel {
+    display: flex;
+    overflow: hidden;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.carousel img {
+    width: 300px;
+    border-radius: 8px;
+}
+
+/* Images dans le pied de page */
+.picture3 img {
+    width: 100%;
+    border-radius: 8px;
+}

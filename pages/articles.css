@@ -1,0 +1,227 @@
+/* Style global de la page */
+
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin-top: 10%;
+    margin-left: 10%;
+}
+
+/* Informations sur le produit */
+#productInfo {
+    display: flex;
+    gap: 20px;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.product-image img {
+    max-width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-details {
+    flex: 1;
+}
+
+.product-details h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+.description {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.price {
+    font-size: 22px;
+    color: #e67e22;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Bouton de commande */
+.order-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #e67e22;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.order-button:hover {
+    background-color: #d35400;
+}
+
+/* Style du bouton de commentaire */
+#commentButton {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#commentButton:hover {
+    background-color: #2980b9;
+}
+
+/* Style du pop-up des commentaires */
+.popup {
+    display: none; /* Par défaut, le pop-up est masqué */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: left;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Bouton de fermeture du pop-up */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Style des avis clients */
+.review {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+}
+
+.review p {
+    color: #333;
+}
+
+.review strong {
+    color: #3498db;
+    font-weight: bold;
+}
+
+.review small {
+    font-size: 12px;
+    color: #888;
+    display: block;
+    text-align: right;
+    margin-top: 5px;
+}
+
+/* Style du formulaire d'ajout de commentaire */
+#addComment {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+#addComment h3 {
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#addComment input,
+#addComment textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    background-color: #f7f7f7;
+    transition: border-color 0.3s ease;
+}
+
+#addComment input:focus,
+#addComment textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    background-color: #fff;
+}
+
+#addComment button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+#addComment button:hover {
+    background-color: #2980b9;
+}
+#rating {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f7f7f7;
+}
