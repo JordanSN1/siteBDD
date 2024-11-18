@@ -55,20 +55,21 @@ $success = isset($_GET['success']) ? $_GET['success'] : 0;
                 </div>
             </div>
 
-            <div class="contact-form">
-                <form id="contact-form" method="POST">
-                    <p><strong>Entrez vos informations</strong></p>
-                    <div>
-                        <input type="text" name="nom" class="form-control" placeholder="Nom" required>
-                        <input type="text" name="prenom" class="form-control" placeholder="Prénom" required>
-                    </div>
-                    <div>
-                        <input type="email" name="email" class="form-control" placeholder="E-mail" required>
-                        <input type="text" name="telephone" class="form-control" placeholder="Téléphone" required>
-                    </div>
-                    <textarea rows="5" name="message" placeholder="Message" class="form-control" required></textarea>
-                    <input type="submit" class="send-btn" value="Envoyer un message">
-                </form>
+            <div class="contact-form" style="resize: none;">
+            <form id="contact-form" method="POST">
+    <p><strong>Entrez vos informations</strong></p>
+    <div>
+        <input type="text" name="nom" class="form-control" placeholder="Nom" required style="resize: none;">
+        <input type="text" name="prenom" class="form-control" placeholder="Prénom" required style="resize: none;">
+    </div>
+    <div>
+        <input type="email" name="email" class="form-control" placeholder="E-mail" required style="resize: none;">
+        <input type="text" name="telephone" class="form-control" placeholder="Téléphone" required style="resize: none;">
+    </div>
+    <textarea rows="5" name="message" placeholder="Message" class="form-control" required
+    style="resize: none;"></textarea>
+    <input type="submit" class="send-btn" value="Envoyer un message" style="resize: none;">
+</form>
 
 
                 <div>
