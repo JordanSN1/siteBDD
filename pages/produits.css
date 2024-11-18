@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* --- Global Styles --- */
+:root {
+    --color-green: #7c9c5f;
+    --color-brown: #baa893;
+    --color-brown-darker: #361b13;
+    --color-white: #f9fdf7;
+    --color-link-hover: #fff;
+}
 
 
 /* --- Headband (Background Image) --- */
@@ -140,7 +147,7 @@
 }
 
 .product-item .add-to-cart {
-    background-color: #007bff;
+    background-color: var(--color-green);
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -151,7 +158,7 @@
 }
 
 .product-item .add-to-cart:hover {
-    background-color: #0056b3;
+    background-color: var(--color-green);
 }
 
 

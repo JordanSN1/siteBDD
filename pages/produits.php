@@ -85,12 +85,12 @@ $products = getProducts($pdo, $category);
                 </li>
                 <li>
                     <a href="?category=boissons">
-                        <div><img src="../img/Burger.png" alt=""><span>Boissons</span></div>
+                        <div><img src="../img/Cocacola.png" alt=""><span>Boissons</span></div>
                     </a>
                 </li>
                 <li>
                     <a href="?category=burgers">
-                        <div><img src="../img/Cocacola.png" alt=""><span>Burgers</span></div>
+                        <div><img src="../img/Burger.png" alt=""><span>Burgers</span></div>
                     </a>
                 </li>
             </ul>
