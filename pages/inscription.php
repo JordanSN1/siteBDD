@@ -5,6 +5,31 @@ include('../scripts/conn.php'); // Connexion à la base de données
 // Initialisation des messages d'erreur ou de succès
 $error = '';
 
+// Fonction pour valider le mot de passe
+function validatePassword($password) {
+    // Vérifie que le mot de passe a au moins 8 caractères
+    if (strlen($password) < 8) {
+        return "Le mot de passe doit contenir au moins 8 caractères.";
+    }
+    
+    // Vérifie qu'il contient au moins une lettre (majuscule ou minuscule)
+    if (!preg_match('/[a-zA-Z]/', $password)) {
+        return "Le mot de passe doit contenir au moins une lettre.";
+    }
+    
+    // Vérifie qu'il contient au moins un chiffre
+    if (!preg_match('/\d/', $password)) {
+        return "Le mot de passe doit contenir au moins un chiffre.";
+    }
+    
+    // Vérifie qu'il contient au moins un caractère spécial
+    if (!preg_match('/[\W_]/', $password)) {
+        return "Le mot de passe doit contenir au moins un caractère spécial.";
+    }
+
+    return true;
+}
+
 // Vérification de la soumission du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données et nettoyage
@@ -20,34 +45,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($password !== $confirm_password) {
         $error = "Les mots de passe ne correspondent pas.";
     } else {
-        try {
-            // Vérification si l'email existe déjà
-            $stmt = $conn->prepare("SELECT email FROM utilisateurs WHERE email = ?");
-            $stmt->execute([$email]);
+        // Validation du mot de passe
+        $passwordValidation = validatePassword($password);
+        if ($passwordValidation !== true) {
+            $error = $passwordValidation;
+        } else {
+            try {
+                // Vérification si l'email existe déjà
+                $stmt = $conn->prepare("SELECT email FROM utilisateurs WHERE email = ?");
+                $stmt->execute([$email]);
 
-            if ($stmt->fetch()) {
-                $error = "Cet email est déjà utilisé.";
-            } else {
-                // Hashage du mot de passe
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                if ($stmt->fetch()) {
+                    $error = "Cet email est déjà utilisé.";
+                } else {
+                    // Hashage du mot de passe
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-                // Insertion dans la base de données
-                $stmt = $conn->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, date_inscription, role_id) 
+                    // Insertion dans la base de données
+                    $stmt = $conn->prepare("INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, date_inscription, role_id) 
                                         VALUES (:nom, :prenom, :email, :mot_de_passe, NOW(), :role_id)");
-                $stmt->execute([
-                    ':nom' => $nom,
-                    ':prenom' => $prenom,
-                    ':email' => $email,
-                    ':mot_de_passe' => $hashed_password,
-                    ':role_id' => 3 // 3 = Utilisateur
-                ]);
+                    $stmt->execute([
+                        ':nom' => $nom,
+                        ':prenom' => $prenom,
+                        ':email' => $email,
+                        ':mot_de_passe' => $hashed_password,
+                        ':role_id' => 3 // 3 = Utilisateur
+                    ]);
 
-                $_SESSION['registration_success'] = true;
-                header("Location: inscription.php");
-                exit();
+                    $_SESSION['registration_success'] = true;
+                    header("Location: inscription.php");
+                    exit();
+                }
+            } catch (Exception $e) {
+                $error = "Erreur lors de l'inscription : " . $e->getMessage();
             }
-        } catch (Exception $e) {
-            $error = "Erreur lors de l'inscription : " . $e->getMessage();
         }
     }
 }
@@ -170,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Redirection après 3 secondes
             setTimeout(function() {
                 window.location.href = "connexion.php";
-            }, 2500); // 3000 millisecondes = 2.5 secondes
+            }, 2500); // 2500 millisecondes = 2.5 secondes
         </script>
     <?php unset($_SESSION['registration_success']); endif; ?>
 
