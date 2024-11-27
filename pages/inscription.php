@@ -1,53 +1,3 @@
-<?php
-session_start();
-
-// Vérification de la soumission du formulaire
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Connexion à la base de données
-    include('../scripts/conn.php');
-
-    // Récupération et nettoyage des données du formulaire
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $confirm_password = trim($_POST['confirm_password']);
-
-    // Vérification des champs vides
-    if (empty($email) || empty($password) || empty($confirm_password)) {
-        $error = "Tous les champs doivent être remplis.";
-    } else {
-        // Vérification que les mots de passe correspondent
-        if ($password !== $confirm_password) {
-            $error = "Les mots de passe ne correspondent pas.";
-        } else {
-            // Vérification si l'email existe déjà
-            $stmt = $conn->prepare("SELECT utilisateur_id FROM utilisateurs WHERE email = ?");
-            $stmt->bindParam(1, $email, PDO::PARAM_STR);
-            $stmt->execute();
-
-            if ($stmt->rowCount() > 0) {
-                $error = "Cet email est déjà utilisé.";
-            } else {
-                // Hachage du mot de passe
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-                // Insertion dans la base de données
-                $stmt = $conn->prepare("INSERT INTO utilisateurs (email, mot_de_passe) VALUES (?, ?)");
-                $stmt->bindParam(1, $email, PDO::PARAM_STR);
-                $stmt->bindParam(2, $hashed_password, PDO::PARAM_STR);
-
-                if ($stmt->execute()) {
-                    $_SESSION['utilisateur_id'] = $conn->lastInsertId(); // Récupérer l'ID de l'utilisateur
-                    header("Location: connexion.php");  // Redirection vers la page de connexion
-                    exit();
-                } else {
-                    $error = "Une erreur est survenue lors de l'inscription. Veuillez réessayer.";
-                }
-            }
-        }
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -65,6 +15,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
+        }
+
+        /* Styles for the success popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .popup .close-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -112,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="wrapper">
         <div class="container">
             <div class="form-box">
-                <form action="inscription.php" method="POST">
+                <form action="inscription.php" method="POST" id="registration-form">
                     <h2>Inscription</h2>
 
                     <?php
@@ -131,8 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="input-box">
                         <input type="password" name="password" id="password" required>
                         <label>Mot de passe</label>
-                        <i class="bx bxs-lock-alt"></i>
-                        <!-- Eye icon for showing/hiding password -->
+
                         <i class="bx bxs-show eye-icon" id="eye-icon"></i>
                     </div>
 
@@ -153,8 +126,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 
-    <!-- JavaScript to toggle password visibility -->
+    <!-- Popup de succès -->
+    <?php
+    if (isset($_SESSION['registration_success']) && $_SESSION['registration_success'] === true) {
+        echo '<div class="popup" id="success-popup">
+                <p>Inscription réussie ! Vous pouvez maintenant vous connecter.</p>
+                <button class="close-btn" onclick="closePopup()">Fermer</button>
+              </div>';
+        unset($_SESSION['registration_success']);  // Supprime le flag après l'affichage
+    }
+    ?>
+
+    <!-- JavaScript pour gérer le popup et la visibilité du mot de passe -->
     <script>
+        // Toggle password visibility
         const eyeIcon = document.getElementById('eye-icon');
         const passwordField = document.getElementById('password');
         const confirmPasswordField = document.getElementById('confirm_password');
@@ -171,6 +156,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 eyeIcon.classList.add('bxs-show');
             }
         });
+
+        // Close the success popup
+        function closePopup() {
+            document.getElementById('success-popup').style.display = 'none';
+        }
     </script>
 
 </body>

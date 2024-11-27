@@ -1,15 +1,16 @@
 <?php
-// Connexion à la base de données 
+// Connexion à la base de données
 $host = 'localhost';
 $db = 'phantomburger';
-$user = 'root';  // Modifie ceci si tu as un utilisateur spécifique
-$pass = '';      // Modifie ceci si tu as un mot de passe spécifique
+$user = 'root';
+$pass = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
+    exit;
 }
 
 // Définir la catégorie par défaut comme "tout"
@@ -19,13 +20,8 @@ $category = $_GET['category'] ?? 'tout';
 function getProducts($pdo, $category)
 {
     if ($category == 'menus') {
-        // Jointure pour récupérer les informations des menus avec les burgers et les boissons
-        $query = "SELECT menus.menu_id, menus.name, menus.description, menus.prix,
-                         burgers.name AS burger_name, burgers.picture AS burger_picture, burgers.description AS burger_description,
-                         boissons.name AS boisson_name, boissons.picture AS boisson_picture, menus.picture AS menu_picture
-                  FROM menus
-                  INNER JOIN burgers ON menus.burger_id = burgers.burger_id
-                  INNER JOIN boissons ON menus.boisson_id = boissons.boisson_id";
+        // Affiche les menus sans jointure avec les burgers
+        $query = "SELECT menu_id, name, description, prix, picture FROM menus";
     } elseif ($category == 'boissons') {
         // Affichage des boissons seules
         $query = "SELECT * FROM boissons";
@@ -34,9 +30,8 @@ function getProducts($pdo, $category)
         $query = "SELECT * FROM burgers";
     } else {
         // Par défaut, on affiche tout (menus, burgers et boissons)
-        $query = "SELECT 'menu' AS type, menus.menu_id AS id, menus.name AS name, menus.description, menus.prix, burgers.picture AS picture
+        $query = "SELECT 'menu' AS type, menu_id AS id, name, description, prix, picture
                   FROM menus
-                  INNER JOIN burgers ON menus.burger_id = burgers.burger_id
                   UNION
                   SELECT 'burger' AS type, burger_id AS id, name, description, prix, picture
                   FROM burgers
@@ -48,6 +43,7 @@ function getProducts($pdo, $category)
     return $pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// Récupérer les produits
 $products = getProducts($pdo, $category);
 ?>
 
@@ -58,7 +54,7 @@ $products = getProducts($pdo, $category);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../pages/produits.css">
-    <title>PhantomBurger - produits</title>
+    <title>PhantomBurger - Produits</title>
 </head>
 
 <body>
@@ -67,7 +63,7 @@ $products = getProducts($pdo, $category);
     </header>
 
     <div class="headband-product">
-        <!-- Ajoute ici des éléments pour ta bannière si nécessaire -->
+        <!-- Bannière ou contenu supplémentaire -->
     </div>
 
     <div class="product-wrapper">
@@ -103,27 +99,17 @@ $products = getProducts($pdo, $category);
                         <?php if (isset($product['picture'])): ?>
                             <img src="../img/<?= htmlspecialchars($product['picture']); ?>"
                                 alt="<?= htmlspecialchars($product['name']); ?>">
-                        <?php elseif (isset($product['menu_picture'])): ?>
-                            <img src="../img/<?= htmlspecialchars($product['menu_picture']); ?>"
-                                alt="<?= htmlspecialchars($product['name']); ?>">
-                        <?php elseif (isset($product['boisson_picture'])): ?>
-                            <img src="../img/<?= htmlspecialchars($product['boisson_picture']); ?>"
-                                alt="<?= htmlspecialchars($product['name']); ?>">
                         <?php endif; ?>
 
-                        <h3>
-                            <?= htmlspecialchars($product['name']); ?>
-                        </h3>
+                        <h3><?= htmlspecialchars($product['name']); ?></h3>
 
-                        <p>
-                            <?= htmlspecialchars($product['description']); ?>
-                        </p>
+                        <p><?= htmlspecialchars($product['description']); ?></p>
                         <p><strong>Prix:</strong> €<?= number_format($product['prix'], 2, ',', ' '); ?></p>
-                        <a href="#" class="add-to-cart">Ajouter au panier</a>
+
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <?php include '../footer/footer.php'; ?>
+                <p>Aucun produit trouvé pour cette catégorie.</p>
             <?php endif; ?>
         </div>
     </div>
@@ -131,7 +117,6 @@ $products = getProducts($pdo, $category);
     <footer>
         <?php include('../footer/footer.php'); ?>
     </footer>
-
 </body>
 
 </html>

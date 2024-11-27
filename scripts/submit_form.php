@@ -16,17 +16,39 @@ if ($conn->connect_error) {
 }
 
 // Récupérer les données du formulaire
-$nom = isset($_POST['nom']) ? $_POST['nom'] : '';
-$prenom = isset($_POST['prenom']) ? $_POST['prenom'] : '';
-$email = isset($_POST['email']) ? $_POST['email'] : '';
-$telephone = isset($_POST['telephone']) ? $_POST['telephone'] : '';
-$message = isset($_POST['message']) ? $_POST['message'] : '';
+$nom = isset($_POST['nom']) ? trim($_POST['nom']) : '';
+$prenom = isset($_POST['prenom']) ? trim($_POST['prenom']) : '';
+$email = isset($_POST['email']) ? trim($_POST['email']) : '';
+$telephone = isset($_POST['telephone']) ? trim($_POST['telephone']) : '';
+$message = isset($_POST['message']) ? trim($_POST['message']) : '';
+$datemsg = date('Y-m-d H:i:s'); // Current date and time
+
+// Vérifier que toutes les données sont présentes
+if (empty($nom) || empty($prenom) || empty($email) || empty($telephone) || empty($message)) {
+    echo json_encode(['success' => false, 'message' => 'Tous les champs doivent être remplis.']);
+    exit();
+}
+
+// Valider l'email
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(['success' => false, 'message' => 'L\'adresse email est invalide.']);
+    exit();
+}
 
 // Préparer et exécuter la requête d'insertion
-$sql = "INSERT INTO contacts (nom, prenom, email, telephone, message) VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO contact (nom, prenom, email, telephone, message, datemsg) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sssss", $nom, $prenom, $email, $telephone, $message);
 
+// Vérifier si la préparation a échoué
+if ($stmt === false) {
+    echo json_encode(['success' => false, 'message' => 'Erreur dans la préparation de la requête SQL.']);
+    exit();
+}
+
+// Lier les paramètres et exécuter la requête
+$stmt->bind_param("ssssss", $nom, $prenom, $email, $telephone, $message, $datemsg);
+
+// Exécuter la requête et vérifier si l'exécution a réussi
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Message envoyé avec succès ! Nos équipes vous contacteront dès que possible.']);
 } else {
@@ -36,3 +58,4 @@ if ($stmt->execute()) {
 // Fermer la connexion
 $stmt->close();
 $conn->close();
+?>
