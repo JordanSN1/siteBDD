@@ -198,7 +198,7 @@ a.connect:hover {
 }
 
 .container {
-    height: 550px;
+    height: 620px;
     width: 450px;
     border: 2px solid rgba(255, 255, 255, .4);
     border-radius: 10px;
@@ -318,8 +318,9 @@ a.connect:hover {
     color: var(--color-green);
     font-weight: 600;
 }
+
 .footer {
-    background-color: #1a1a1a; /* Couleur de fond du footer */
+    background-color: #1a1a1a;
     color: #fff;
     padding: 40px 0;
     font-family: Arial, sans-serif;
@@ -328,6 +329,7 @@ a.connect:hover {
     bottom: 0;
     width: 100%;
 }
+
 @media (max-width: 768px) {
     .container {
         height: 500px;
@@ -364,6 +366,7 @@ a.connect:hover {
         width: 100%;
         font-size: 14px;
     }
+
     .account-creation {
         font-size: 13px;
 
@@ -406,6 +409,7 @@ a.connect:hover {
         width: 100%;
         font-size: 12px;
     }
+
     .account-creation {
         font-size: 11px;
 
@@ -448,6 +452,7 @@ a.connect:hover {
         width: 100%;
         font-size: 10px;
     }
+
     .account-creation {
         font-size: 10px;
 
