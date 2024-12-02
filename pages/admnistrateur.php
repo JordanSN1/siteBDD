@@ -21,13 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
     if ($type && $name && $prix && $picture) {
         if ($type === 'menus') {
-
+            // Ajout du menu
             $query = "INSERT INTO menus (name, description, prix, picture) VALUES (?, ?, ?, ?)";
             $stmt = $pdo->prepare($query);
             $stmt->execute([$name, $description, $prix, $picture]);
             $menu_id = $pdo->lastInsertId();
 
-
+            // Ajout des relations avec les burgers
             if (isset($_POST['burgers']) && is_array($_POST['burgers'])) {
                 foreach ($_POST['burgers'] as $burger_id) {
                     $query = "INSERT INTO burgers_appartient (menu_id, burger_id) VALUES (?, ?)";
@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 }
             }
 
+            // Ajout des relations avec les boissons
             if (isset($_POST['boissons']) && is_array($_POST['boissons'])) {
                 foreach ($_POST['boissons'] as $boisson_id) {
                     $query = "INSERT INTO boissons_appartient (menu_id, boisson_id) VALUES (?, ?)";
@@ -69,30 +70,6 @@ if (isset($_GET['delete_id']) && isset($_GET['type'])) {
 
     $stmt = $pdo->prepare($query);
     $stmt->execute([$delete_id]);
-}
-
-// Traitement de la suppression d'un utilisateur
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete_user') {
-    $user_id = $_POST['user_id'] ?? '';
-    if ($user_id) {
-        $query = "DELETE FROM utilisateurs WHERE utilisateur_id = ?";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([$user_id]);
-    }
-}
-
-// Traitement de la modification d'un utilisateur
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_user') {
-    $user_id = $_POST['user_id'] ?? '';
-    $name = $_POST['name'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    if ($user_id && $name && $email && $password) {
-        $query = "UPDATE utilisateurs SET nom = ?, email = ?, mot_de_passe = ? WHERE utilisateur_id = ?";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([$name, $email, $password, $user_id]);
-    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit_product') {
@@ -148,170 +125,77 @@ $products = getProducts($pdo, $category);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../pages/produits.css">
     <style>
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+        button:hover {
+            background-color: #45a049;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
-.product-item button {
-    margin-top: 10px;
-}
+        .product-item button {
+            margin-top: 10px;
+        }
 
+        #addProductForm, #editProductForm {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            z-index: 1000;
+        }
 
-#addProductForm, #editProductForm, #editUserForm, #addUserForm {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    z-index: 1000;
-    width: 90%;
-    max-width: 600px;
-}
+        #addProductForm label, #editProductForm label {
+            display: block;
+            margin-top: 10px;
+        }
 
-#addProductForm label, #editProductForm label, #editUserForm label, #addUserForm label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: #333;
-}
+        #addProductForm input, #addProductForm select, #editProductForm input, #editProductForm select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
 
-#addProductForm input, #addProductForm select, #editProductForm input, #editProductForm select, #editUserForm input, #addUserForm input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-}
+        #addProductForm button, #editProductForm button {
+            margin-top: 15px;
+        }
 
-#addProductForm button, #editProductForm button, #editUserForm button, #addUserForm button {
-    margin-top: 15px;
-}
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
 
-.menu-options-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-}
+        .menu-options-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
 
-.menu-options-wrapper label {
-    font-weight: bold;
-}
-
-#userList {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    width: 90%;
-    max-width: 800px;
-    z-index: 1000;
-    overflow-y: auto;
-    max-height: 80%;
-}
-
-#userList h3 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-#userList table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-#userList table th, #userList table td {
-    padding: 12px 15px;
-    text-align: left;
-    border: 1px solid #ddd;
-}
-
-#userList table th {
-    background-color: #4CAF50;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-#userList table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-#userList table tr:hover {
-    background-color: #f1f1f1;
-}
-
-#userList table td {
-    color: #333;
-    font-size: 14px;
-    vertical-align: middle;
-}
-
-#userList table td button {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    text-align: center;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#userList table td button:hover {
-    background-color: #e60000;
-}
-
-#userList button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    margin-top: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-#userList button:hover {
-    background-color: #45a049;
-}
-
-
+        .menu-options-wrapper label {
+            font-weight: bold;
+        }
     </style>
     <title>PhantomBurger - Produits</title>
 </head>
@@ -348,51 +232,8 @@ button:hover {
                 <li>
                     <button onclick="openAddProductForm()" style="margin-left: 20px;">Ajouter Un Produit</button>
                 </li>
-                <li>
-                    <button onclick="openUserList()" style="margin-left: 20px;">Voir les utilisateurs</button>
-                </li>
-
             </ul>
         </div>
-        <div id="userList" style="display: none;">
-    <h3>Liste des utilisateurs</h3>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Mot de passe</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $users = $pdo->query("SELECT utilisateur_id, nom, email, mot_de_passe FROM utilisateurs")->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($users as $user): ?>
-                <tr>
-                    <td><?= htmlspecialchars($user['utilisateur_id']); ?></td>
-                    <td><?= htmlspecialchars($user['nom']); ?></td>
-                    <td><?= htmlspecialchars($user['email']); ?></td>
-                    <td><?= htmlspecialchars($user['mot_de_passe']); ?></td> 
-
-                    <td>
-                        <form method="post" style="display:inline;" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
-                            <input type="hidden" name="action" value="delete_user">
-                            <input type="hidden" name="user_id" value="<?= $user['utilisateur_id']; ?>">
-                            <button type="submit">Supprimer</button>
-                        </form>
-                        <button type="button" onclick="openEditUserForm('<?= $user['utilisateur_id']; ?>', '<?= htmlspecialchars($user['nom']); ?>', '<?= htmlspecialchars($user['email']); ?>', '<?= htmlspecialchars($user['mot_de_passe']); ?>')">Modifier</button>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <button onclick="closeUserList()">Fermer</button>
-</div>
-
-
-
 
         <div class="products-list">
             <?php if (count($products) > 0): ?>
@@ -418,7 +259,7 @@ button:hover {
         </div>
     </div>
 
-    <div id="overlay" onclick="closeAddProductForm(); closeEditProductForm(); closeEditUserForm(); closeAddUserForm();"></div>
+    <div id="overlay" onclick="closeAddProductForm(); closeEditProductForm();"></div>
     <div id="addProductForm">
         <form method="post" action="">
             <input type="hidden" name="action" value="add_product">
@@ -463,7 +304,7 @@ button:hover {
             <button type="button" onclick="closeAddProductForm()">Annuler</button>
         </form>
     </div>
-</td>
+
     <div id="editProductForm">
         <form method="post" action="">
             <input type="hidden" name="action" value="edit_product">
@@ -487,35 +328,11 @@ button:hover {
         </form>
     </div>
 
-    <div id="editUserForm">
-        <form method="post" action="">
-            <input type="hidden" name="action" value="edit_user">
-            <input type="hidden" id="edit_user_id" name="user_id">
-            <label for="edit_user_name">Nom:</label>
-            <input type="text" id="edit_user_name" name="name" required><br>
-            <label for="edit_user_email">Email:</label>
-            <input type="email" id="edit_user_email" name="email" required><br>
-            <label for="edit_user_password">Mot de passe:</label>
-            <input type="text" id="edit_user_password" name="password" required><br>
-            <button type="submit">Modifier</button>
-            <button type="button" onclick="closeEditUserForm()">Annuler</button>
-        </form>
-    </div>
-
     <footer>
         <?php include('../footer/footer.php'); ?>
     </footer>
 
     <script>
-            function openUserList() {
-        document.getElementById('userList').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-    }
-
-    function closeUserList() {
-        document.getElementById('userList').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
         function openAddProductForm() {
             document.getElementById('addProductForm').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
@@ -542,30 +359,6 @@ button:hover {
             document.getElementById('overlay').style.display = 'none';
         }
 
-        function openEditUserForm(userId, name, email, password) {
-            document.getElementById('edit_user_id').value = userId;
-            document.getElementById('edit_user_name').value = name;
-            document.getElementById('edit_user_email').value = email;
-            document.getElementById('edit_user_password').value = password;
-            document.getElementById('editUserForm').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function closeEditUserForm() {
-            document.getElementById('editUserForm').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        function openAddUserForm() {
-            document.getElementById('addUserForm').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function closeAddUserForm() {
-            document.getElementById('addUserForm').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
         function toggleMenuOptions() {
             const type = document.getElementById('type').value;
             if (type === 'menus') {
@@ -574,35 +367,6 @@ button:hover {
                 document.getElementById('menuOptions').style.display = 'none';
             }
         }
-        function deleteProduct(deleteId, type) {
-        if (confirm('Voulez-vous vraiment supprimer ce produit ?')) {
-            // Créez une requête AJAX
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "?delete_id=" + deleteId + "&type=" + type, true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    try {
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.success) {
-                            // Si la suppression est réussie, retirez l'élément de l'interface
-                            var productItem = document.getElementById('product-' + deleteId);
-                            if (productItem) {
-                                productItem.parentNode.removeChild(productItem);
-                            }
-                        } else {
-                            alert('Erreur lors de la suppression. Veuillez réessayer.');
-                        }
-                    } catch (e) {
-                        alert('Erreur de réponse du serveur.');
-                    }
-                }
-            };
-            xhr.send();
-        }
-    }
-
     </script>
 </body>
 </html>
