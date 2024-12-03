@@ -133,6 +133,20 @@ a.connect:hover {
     display: none;
 }
 
+.deconnexion-btn {
+    color: var(--color-brown-darker);
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.deconnexion-btn:hover {
+    color: var(--color-green);
+    transform: translateY(-2px);
+}
+
+
 /* Affichage du menu burger et du menu principal sur mobile */
 @media (max-width: 768px) {
     nav .nav-links {

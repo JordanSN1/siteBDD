@@ -45,12 +45,14 @@
     </div>
 
 
+
     <section class="cta-section">
         <h1>Repars avec du croustillant plein les poches</h1>
         <p>Cumulez des points pour vous offrir des produits croustillants</p>
-        <a href="inscription.php" class="cta-button">Créer un compte</a>
+        <?php if (!isset($_SESSION['utilisateur_id_'])): ?>
+            <a href="inscription.php" class="cta-button">Créer un compte</a>
+        <?php endif; ?>
     </section>
-
 
 
     <section class="carousel-section">

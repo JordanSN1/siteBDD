@@ -10,49 +10,37 @@
 </head>
 
 <body>
+    <?php
+    session_start();
+    ?>
+
     <header>
         <nav>
             <div class="logo">
                 <img src="../assets/phantomBurgerlogo.png" alt="PhantomBurger logo">
             </div>
 
-            <!-- Menu burger pour mobile -->
             <div class="menu-toggle" id="menu-toggle">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
             </div>
 
-            <!-- Liens de navigation principaux -->
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.php">Accueil</a></li>
                 <li><a href="produits.php">Produits</a></li>
                 <li><a href="about.php">À propos</a></li>
                 <li><a href="contact.php">Contact</a></li>
-                <!-- Liens utilisateur (se connecter/panier) visibles uniquement en version mobile -->
-                <li class="mobile-user-actions"></li>
-                </li>
-                <?php
-                session_start();
-                if (isset($_SESSION['utilisateur_id_'])) {
-                    echo '<a class="mobile-panier" href="cart.php">Panier</a>';
-                } else {
-                    echo '<a class="mobile-connect" href="login.php">Se connecter</a>';
-                }
-                ?>
-                </li>
+
             </ul>
 
-            <!-- Liens utilisateur (se connecter/panier) visibles uniquement en version desktop -->
             <div class="user-actions">
-                <?php
-
-                if (isset($_SESSION['utilisateur_id_'])) {
-                    echo '<a class="panier" href="cart.php">Panier</a>';
-                } else {
-                    echo '<a class="connect" href="connexion.php">connecter</a>';
-                }
-                ?>
+                <?php if (isset($_SESSION['utilisateur_id_'])): ?>
+                    <a class="panier" href="cart.php">Panier</a>
+                    <a class="deconnexion-btn" href="deconnexion.php">Déconnexion</a>
+                <?php else: ?>
+                    <a class="connect" href="connexion.php">Connecter</a>
+                <?php endif; ?>
             </div>
         </nav>
     </header>
