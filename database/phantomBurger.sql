@@ -421,6 +421,24 @@ INSERT INTO `utilisateurs` (`utilisateur_id_`, `nom`, `prenom`, `email`, `mot_de
 (1, 'Admin', 'Admin', 'admin@phantomburger.com', 'admin', '2024-11-28 10:43:10', 1),
 (2, 'Modérateur', 'Modérateur', 'moderateur@phantomburger.com', 'moderateur', '2024-11-28 10:43:10', 2),
 (3, 'Manuel', 'Dos Santos', 'm.dossantosataide@ecoles-epsi.net', '$2y$10$xBJ4NWi3H/zV/Uvv1Jz3HuLg29zIr2ZKKhrNIOscEmiLBshvzZ3.2', '2024-12-02 21:21:43', 3);
+--
+-- Structure de la table `role`
+--
 
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE IF NOT EXISTS `role` (
+  `role_id` int NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `role`
+--
+
+INSERT INTO `role` (`role_id`, `role_name`) VALUES
+(1, 'admin'),
+(2, 'moderateur'),
+(3, 'utilisateur');
 -- --------------------------------------------------------
 

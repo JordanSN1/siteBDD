@@ -1,3 +1,9 @@
+<?php
+// Démarrer la session en premier, avant tout contenu HTML ou espace
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -10,9 +16,6 @@
 </head>
 
 <body>
-    <?php
-    session_start();
-    ?>
 
     <header>
         <nav>
@@ -32,6 +35,16 @@
                 <li><a href="about.php">À propos</a></li>
                 <li><a href="contact.php">Contact</a></li>
 
+                <!-- Liens utilisateur (se connecter/panier) visibles uniquement en version mobile -->
+                <li class="mobile-user-actions"></li>
+                <?php
+                if (isset($_SESSION['user_id'])) {
+                    echo '<a class="mobile-panier" href="panier.php">Panier</a>';
+                } else {
+                    echo '<a class="mobile-connect" href="login.php">Se connecter</a>';
+                }
+                ?>
+
             </ul>
 
             <div class="user-actions">
@@ -44,3 +57,6 @@
             </div>
         </nav>
     </header>
+</body>
+
+</html>
