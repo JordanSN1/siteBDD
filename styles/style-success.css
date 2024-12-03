@@ -1,0 +1,77 @@
+/* Styles de base */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+   
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    color: #333;
+  }
+  
+  /* Écran de chargement */
+  .loading-screen {
+    text-align: center;
+  }
+  
+  .burger {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    animation: bounce 1.2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .progress-container {
+    width: 80%;
+    background-color: #ddd;
+    border-radius: 10px;
+    margin: 20px auto;
+    height: 10px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(45deg, #baa893, #d1c1b1, #8f8c7f);
+    transition: width 0.2s;
+  }
+  
+  /* Écran de succès */
+  .hidden {
+    display: none;
+  }
+  
+  .success-screen {
+    text-align: center;
+  }
+  
+  .success-screen h1 {
+    color: linear-gradient(45deg, #baa893, #d1c1b1, #8f8c7f);;
+  }
+  
+  .success-screen button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .success-screen button:hover {
+    background: linear-gradient(45deg, #baa893, #d1c1b1, #8f8c7f);
+  }
+  

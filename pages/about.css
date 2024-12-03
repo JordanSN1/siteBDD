@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Paramètres Généraux */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+button,
+.bouton {
+    border: none;
+    outline: none;
+    padding: 10px;
+    margin: 2rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #baa893;
+    text-align: center;
+    cursor: pointer;
+    width: 15rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover,
+.bouton:hover {
+    background-color: #a8927d;
+}
+
+/* Section À Propos */
+.a-propos,
+.about {
+    padding: 100px 0 20px;
+    text-align: center;
+    font-family: 'Sour Gummy', cursive;
+}
+
+.a-propos h1,
+.about h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.a-propos p,
+.about p {
+    font-size: 1rem;
+    color: #323030;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Sour Gummy', cursive;
+}
+
+.info-a-propos,
+.about-info {
+    margin: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    text-align: left;
+
+}
+
+.image-a-propos,
+.about-img {
+    width: 240px;
+    height: 240px;
+}
+
+.image-a-propos img,
+.about-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.info-a-propos p,
+.about-info p {
+    font-size: 1.3rem;
+    margin: 0 2rem;
+    text-align: justify;
+}
+
+/* Section Équipe */
+.equipe,
+.team {
+    padding: 30px 0;
+    text-align: center;
+}
+
+.equipe h1,
+.team h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.cartes-equipe,
+.team-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.carte,
+.card {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 250px;
+    height: 400px;
+}
+
+.carte:hover,
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+.image-carte,
+.card-img {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.image-carte img,
+.card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-carte,
+.card-info {
+    padding: 1rem;
+    text-align: center;
+    font-family: 'Sour Gummy', cursive;
+}
+
+.info-carte .bouton,
+.card-info button {
+    width: auto;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-family: 'Sour Gummy', cursive;
+}
+
+.nom-carte,
+.card-name {
+    font-size: 1.8rem;
+    margin: 10px 0;
+    font-family: 'Sour Gummy', cursive;
+}
+
+.role-carte,
+.card-role {
+    font-size: 1rem;
+    color: #888;
+    font-family: 'Sour Gummy', cursive;
+}
+
+.email-carte,
+.card-email {
+    font-size: 1rem;
+    color: #555;
+    font-family: 'Sour Gummy', cursive;
+}
+
+/* Design Réactif */
+@media (max-width: 768px) {
+
+    .a-propos h1,
+    .about h1 {
+        font-size: 2rem;
+    }
+
+    .a-propos p,
+    .about p {
+        font-size: 0.9rem;
+    }
+
+    .info-a-propos,
+    .about-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image-a-propos,
+    .about-img {
+        width: 60%;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .cartes-equipe,
+    .team-cards {
+        gap: 10px;
+    }
+
+    button,
+    .bouton {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+}
+
+.projects-container {
+
+    justify-content: center;
+    padding: 8px;
+    box-shadow: 0 4px 16px -6px rgba(0, 0, 0, 0.4);
+    max-width: 550px;
+
+    margin-left: 35%;
+    border-radius: 20px;
+    background-color: #fff;
+    border: 5px solid #12192c
+}
+
+.projects-container .project {
+    height: 160px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 32px;
+}
+
+.projects-container .project-name {
+    font-size: 16px;
+}
+
+.projects-container .project-number {
+    font-size: 72px;
+    font-weight: bold;
+}

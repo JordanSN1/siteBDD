@@ -1,0 +1,460 @@
+:root {
+    --color-green: #7c9c5f;
+    --color-brown: #baa893;
+    --color-brown-darker: #361b13;
+    --color-white: #f9fdf7;
+    --color-link-hover: #fff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--color-brown);
+    color: var(--color-white);
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    top: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+}
+
+nav .logo {
+    flex: 0;
+}
+
+nav .logo img {
+    height: 80px;
+}
+
+nav .nav-links {
+    position: absolute;
+    right: 33%;
+    list-style: none;
+    text-transform: uppercase;
+    display: flex;
+    margin: 0;
+
+    padding: 0;
+    flex: 1;
+    justify-content: center;
+}
+
+nav .nav-links li {
+    margin: 0 15px;
+}
+
+nav .nav-links li a {
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    position: relative;
+    padding-bottom: 5px;
+}
+
+nav .nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-link-hover);
+    transition: width 0.3s ease-out;
+}
+
+nav .nav-links li a:hover::after {
+    width: 100%;
+}
+
+nav .user-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+a.panier,
+a.connect {
+    background-color: var(--color-brown-darker);
+    text-transform: uppercase;
+    color: var(--color-white);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+a.panier:hover,
+a.connect:hover {
+    border-right: var(--color-green) 5px solid;
+    border-bottom: var(--color-green) 5px solid;
+    border-radius: 5px;
+    transform: translateY(-2px);
+}
+
+/* Style pour le menu burger */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    width: 30px;
+    height: 21px;
+}
+
+.menu-toggle .bar {
+    width: 30px;
+    height: 4px;
+    background-color: var(--color-white);
+    border-radius: 10px;
+}
+
+.mobile-panier,
+.mobile-connect {
+    display: none;
+}
+
+/* Affichage du menu burger et du menu principal sur mobile */
+@media (max-width: 768px) {
+    nav .nav-links {
+        display: none;
+        /* Masquer le menu de navigation par défaut */
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-brown);
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    nav .nav-links.active {
+        display: flex;
+        /* Afficher le menu quand la classe 'active' est ajoutée */
+    }
+
+    nav .nav-links li {
+        margin: 10px 0;
+    }
+
+    nav .user-actions {
+        display: none;
+        /* Masquer les boutons de connexion et panier sur mobile */
+    }
+
+    .menu-toggle {
+        display: flex;
+        /* Afficher le burger menu */
+    }
+
+    .mobile-panier,
+    .mobile-connect {
+        text-transform: uppercase;
+        display: block;
+        background-color: var(--color-brown-darker);
+        color: var(--color-white);
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-left: 20px;
+    }
+
+
+}
+
+
+/* Page connexion */
+
+.wrapper {
+    background: url(../assets/BurgerBackground.png) no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.container {
+    height: 620px;
+    width: 450px;
+    border: 2px solid rgba(255, 255, 255, .4);
+    border-radius: 10px;
+    background: rgba(0, 0, 0, .2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2),
+        0 0 15px rgba(0, 0, 0, .2) 0 0 30px rgba(0, 0, 0, .2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.form-box {
+    display: flex;
+}
+
+.container .form-box h2 {
+    text-align: center;
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.form-box .input-box {
+    margin: 35px 0;
+    width: 330px;
+    border-bottom: 2px solid rgba(255, 255, 255, .4);
+    position: relative;
+}
+
+.form-box .input-box input {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 40px;
+    padding: 0 35px 0 5px;
+}
+
+.form-box .input-box label {
+    font-weight: 400;
+    letter-spacing: .5px;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: .5s ease;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -5px;
+}
+
+.input-box i {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.forget-section {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    margin: -2px 0 30px;
+}
+
+.forget-section p {
+    display: flex;
+    align-items: center;
+}
+
+.forget-section p input {
+    accent-color: var(--color-green);
+    margin: 0 3px;
+}
+
+.forget-section a {
+    text-decoration: none;
+}
+
+.btn {
+    height: 45px;
+    width: 100%;
+    border-radius: 50px;
+    color: #ffffff;
+    background-color: var(--color-brown-darker);
+    border: 2px solid #baa893;
+    outline: none;
+    font-size: 16px;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.account-creation {
+    text-align: center;
+    margin: 25px 0 10px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.account-creation span a {
+    text-decoration: none;
+}
+
+.account-creation a:hover {
+    text-decoration: underline;
+
+}
+
+.forg-btn,
+.inscr-btn {
+    text-decoration: none;
+    color: var(--color-green);
+    font-weight: 600;
+}
+
+.footer {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 40px 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .container {
+        height: 500px;
+        width: 380px;
+    }
+
+    .container .form-box h2 {
+        font-size: 32px;
+    }
+
+    .container .form-box {
+        margin: 40px 0;
+        width: 300px;
+    }
+
+    .form-box .input-box {
+        width: 300px;
+    }
+
+    .form-box .input-box i {
+        font-size: 18px;
+    }
+
+    .form-box .input-box label {
+        font-size: 14px;
+    }
+
+    .forget-section {
+        font-size: 13px;
+    }
+
+    .btn {
+        height: 40px;
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .account-creation {
+        font-size: 13px;
+
+    }
+}
+
+@media (max-width: 486px) {
+    .container {
+        height: 450px;
+        width: 310px;
+    }
+
+    .container .form-box h2 {
+        font-size: 26px;
+    }
+
+    .container .form-box {
+        margin: 30px 0;
+        width: 260px;
+    }
+
+    .form-box .input-box {
+        width: 250px;
+    }
+
+    .form-box .input-box i {
+        font-size: 16px;
+    }
+
+    .form-box .input-box label {
+        font-size: 12px;
+    }
+
+    .forget-section {
+        font-size: 11px;
+    }
+
+    .btn {
+        height: 35px;
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .account-creation {
+        font-size: 11px;
+
+    }
+}
+
+@media (max-width: 365px) {
+    .container {
+        height: 420px;
+        width: 290px;
+    }
+
+    .container .form-box h2 {
+        font-size: 24px;
+    }
+
+    .container .form-box {
+        margin: 25px 0;
+        width: 220px;
+    }
+
+    .form-box .input-box {
+        width: 220px;
+    }
+
+    .form-box .input-box i {
+        font-size: 13px;
+    }
+
+    .form-box .input-box label {
+        font-size: 10px;
+    }
+
+    .forget-section {
+        font-size: 10px;
+    }
+
+    .btn {
+        height: 30px;
+        width: 100%;
+        font-size: 10px;
+    }
+
+    .account-creation {
+        font-size: 10px;
+
+    }
+}
