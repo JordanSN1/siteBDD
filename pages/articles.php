@@ -1,4 +1,5 @@
 <?php
+
 // Activer les erreurs pour le débogage
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -64,19 +65,20 @@ if (isset($_POST['submit_comment'])) {
 
             if ($product) {
                 echo "
-                <section id='productInfo'>
-                    <div class='product-image'>
-                        <img src='../img/" . htmlspecialchars($product['picture']) . "' alt='Image du produit'>
-                    </div>
-                    <div class='product-details'>
-                        <h2>" . htmlspecialchars($product['name']) . "</h2>
-                        <p class='tagline'>Mettez du poisson dans votre menu</p>
-                        <p class='description'>" . htmlspecialchars($product['description']) . "</p>
-                        <p class='price'>Prix : " . htmlspecialchars($product['prix']) . "€</p>
-                        <a href='../commandes/commandes.php?id=" . htmlspecialchars($product['burger_id']) . "' class='order-button'>Commandez</a>
-                        <button id='commentButton' onclick='openCommentPopup()'>🗨️ Voir les commentaires ($total_comments)</button>
-                    </div>
-                </section>";
+                    <section id='productInfo'>
+        <div class='product-image'>
+            <img src='../img/" . htmlspecialchars($product['picture']) . "' alt='Image du produit'>
+        </div>
+        <div class='product-details'>
+            <h2>" . htmlspecialchars($product['name']) . "</h2>
+            <p class='tagline'>Mettez du poisson dans votre menu</p>
+            <p class='description'>" . htmlspecialchars($product['description']) . "</p>
+            <p class='price'>Prix : " . htmlspecialchars($product['prix']) . "€</p>
+            " . "<a href='cart.php?action=add&name=" . urlencode($product['name']) . "' class='order-button'>Ajouter au panier</a>" . "
+            <button id='commentButton' onclick='openCommentPopup()'>🗨️ Voir les commentaires ($total_comments)</button>
+        </div>
+    </section>";
+
 
                 echo "
                 <div id='commentPopup' class='popup'>

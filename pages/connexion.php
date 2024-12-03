@@ -2,7 +2,7 @@
 session_start();
 
 // Vérification si l'utilisateur est déjà connecté
-if (isset($_SESSION['utilisateur_id'])) {
+if (isset($_SESSION['utilisateur_id_'])) {
     header("Location: index.php");
     exit();
 }
@@ -10,7 +10,12 @@ if (isset($_SESSION['utilisateur_id'])) {
 // Vérification de la soumission du formulaire
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connexion à la base de données
-    include('../scripts/conn.php');
+    include('../scripts/conn.php');  // Assurez-vous que ce fichier contient une connexion PDO
+
+    // Vérification que la connexion PDO est correcte
+    if (!$conn instanceof PDO) {
+        die("Erreur de connexion à la base de données.");
+    }
 
     // Récupération et nettoyage des données du formulaire
     $email = trim($_POST['email']);
@@ -20,31 +25,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || empty($password)) {
         $error = "Tous les champs doivent être remplis.";
     } else {
-        // Requête pour obtenir les informations de l'utilisateur
-        $stmt = $conn->prepare("SELECT utilisateur_id, mot_de_passe FROM utilisateurs WHERE email = ?");
-        $stmt->bindParam(1, $email, PDO::PARAM_STR);
-        $stmt->execute();
+        try {
+            // Requête pour obtenir les informations de l'utilisateur
+            $stmt = $conn->prepare("SELECT utilisateur_id_, mot_de_passe FROM utilisateurs WHERE email = :email");
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
 
-        // Vérification si l'utilisateur existe
-        if ($stmt->rowCount() > 0) {
-            $stmt->bindColumn(1, $utilisateur_id);
-            $stmt->bindColumn(2, $hashed_password);
-            $stmt->fetch(PDO::FETCH_ASSOC);
+            // Vérification si l'utilisateur existe
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);  // On utilise fetch pour récupérer une ligne directement
 
-            // Vérification du mot de passe
-            if (password_verify($password, $hashed_password)) {
-                // Authentification réussie, démarrage de la session
-                $_SESSION['utilisateur_id'] = $utilisateur_id;
-                header("Location: index.php");  // Redirection vers la page d'accueil
-                exit();
+            if ($user) {
+                // Vérification du mot de passe
+                if (password_verify($password, $user['mot_de_passe'])) {
+                    // Authentification réussie, démarrage de la session
+                    $_SESSION['utilisateur_id_'] = $user['utilisateur_id_'];
+                    header("Location: index.php");
+                    exit();
+                } else {
+                    $error = "Mot de passe incorrect.";
+                }
             } else {
-                $error = "Mot de passe incorrect.";
+                $error = "Aucun compte associé à cet email.";
             }
-        } else {
-            $error = "Aucun compte associé à cet email.";
-        }
 
-        $stmt->closeCursor();
+        } catch (Exception $e) {
+            $error = "Une erreur est survenue lors de la connexion : " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -90,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <li><a href="a-propos.php">À propos</a></li>
                 <li><a href="contact.php">Contact</a></li>
                 <?php
-                if (isset($_SESSION['utilisateur_id'])) {
+                if (isset($_SESSION['utilisateur_id_'])) {
                     echo '<a class="mobile-panier" href="panier.php">Panier</a>';
                 } else {
                     echo '<a class="mobile-connect" href="connexion.php">Inscription</a>';
@@ -100,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="user-actions">
                 <?php
-                if (isset($_SESSION['utilisateur_id'])) {
+                if (isset($_SESSION['utilisateur_id_'])) {
                     echo '<a class="panier" href="panier.php">Panier</a>';
                 } else {
                     echo '<a class="connect" href="connexion.php">Connecter</a>';

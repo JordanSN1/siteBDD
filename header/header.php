@@ -34,8 +34,8 @@
                 </li>
                 <?php
                 session_start();
-                if (isset($_SESSION['user_id'])) {
-                    echo '<a class="mobile-panier" href="panier.php">Panier</a>';
+                if (isset($_SESSION['utilisateur_id_'])) {
+                    echo '<a class="mobile-panier" href="cart.php">Panier</a>';
                 } else {
                     echo '<a class="mobile-connect" href="login.php">Se connecter</a>';
                 }
@@ -47,8 +47,8 @@
             <div class="user-actions">
                 <?php
 
-                if (isset($_SESSION['user_id'])) {
-                    echo '<a class="panier" href="panier.php">Panier</a>';
+                if (isset($_SESSION['utilisateur_id_'])) {
+                    echo '<a class="panier" href="cart.php">Panier</a>';
                 } else {
                     echo '<a class="connect" href="connexion.php">connecter</a>';
                 }
