@@ -30,16 +30,19 @@
             <?php if (!empty($_SESSION['cart'])): ?>
                 <?php foreach ($_SESSION['cart'] as $id => $item): ?>
                     <div class="cart-item">
-                        <img src="../img/<?= htmlspecialchars($item['picture']); ?>" alt="<?= htmlspecialchars($item['name']); ?>">
+                        <img src="../img/<?= htmlspecialchars($item['picture']); ?>"
+                            alt="<?= htmlspecialchars($item['name']); ?>">
                         <div class="item-details">
                             <h2><?= htmlspecialchars($item['name']); ?></h2>
                             <p>Prix : €<?= number_format($item['price'], 2, ',', ' '); ?></p>
                             <p>Quantité : <?= $item['quantity']; ?></p>
-                            <form action="cart.php?action=update&name=<?= urlencode($item['name']); ?>" method="post" style="display: inline;">
+                            <form action="cart.php?action=update&name=<?= urlencode($item['name']); ?>" method="post"
+                                style="display: inline;">
                                 <button type="submit" class="plus-btn"><i class="fa fa-plus"></i></button>
                             </form>
                         </div>
-                        <a href="cart.php?action=remove&name=<?= urlencode($item['name']); ?>" class="remove-btn"><i class="fa fa-minus"></i></a>
+                        <a href="cart.php?action=remove&name=<?= urlencode($item['name']); ?>" class="remove-btn"><i
+                                class="fa fa-minus"></i></a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -67,7 +70,7 @@
                 </form>
             <?php else: ?>
                 <p><strong>Votre panier est vide, vous devez ajouter des articles pour passer à la caisse.</strong></p>
-               
+
             <?php endif; ?>
         </div>
     </div>
@@ -81,5 +84,5 @@
 </html>
 
 <style>
-     <?php include("../styles/style-cart.css"); ?>
+    <?php include("../styles/style-cart.css"); ?>
 </style>

@@ -36,72 +36,71 @@
             </div>
         </div>
     </section>
-</body>
-<div class="projects-container">
-    <div class="project">
-        <h3 class="project-name">Clients</h3>
-        <div class="project-number odometer websites-designed">0</div>
-    </div>
-
-    <div class="project">
-        <h3 class="project-name">Projects</h3>
-        <div class="project-number odometer apps-developed">0</div>
-    </div>
-</div>
-
-
-<section class="team">
-    <h1>Meet Our Team</h1>
-    <div class="team-cards">
-
-
-        <div class="card">
-            <div class="card-img">
-                <img src="../img/afficherPhotoUtilisateur.jpg" alt="User 1">
-            </div>
-            <div class="card-info">
-                <h2 class="card-name">Nabil Saied</h2>
-                <p class="card-role">CEO and Founder</p>
-                <p class="card-email">nabil.saied@ecoles-epsi.net</p>
-                <p><button class="button">Contact</button></p>
-            </div>
+    <div class="projects-container">
+        <div class="project">
+            <h3 class="project-name">Clients</h3>
+            <div class="project-number odometer websites-designed">0</div>
         </div>
 
-        <div class="card">
-            <div class="card-img">
-                <img src="../img/Capture d’écran 2024-10-01 095249.png" alt="User 1">
-            </div>
-            <div class="card-info">
-                <h2 class="card-name">Pedro ataide </h2>
-                <p class="card-role">CEO and Founder</p>
-                <p class="card-email">m.dossantosataide@ecoles-epsi.net</p>
-                <p><button class="button">Contact</button></p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-img">
-                <img src="../img/jordan.jpg" alt="User 2">
-            </div>
-            <div class="card-info">
-                <h2 class="card-name">Jordan Turnaco</h2>
-                <p class="card-role">Co-Founder</p>
-                <p class="card-email">jordan.turnaco@ecoles-epsi.net</p>
-                <p><button class="button">Contact</button></p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-img">
-                <img src="../img/ilyas.png" alt="User 3">
-            </div>
-            <div class="card-info">
-                <h2 class="card-name">Ilyas Lachgar</h2>
-                <p class="card-role">Co-Founder</p>
-                <p class="card-email">ilyas.lachgar@ecoles-epsi.net</p>
-                <p><button class="button">Contact</button></p>
-            </div>
+        <div class="project">
+            <h3 class="project-name">Projects</h3>
+            <div class="project-number odometer apps-developed">0</div>
         </div>
     </div>
-</section>
+
+
+    <section class="team">
+        <h1>Meet Our Team</h1>
+        <div class="team-cards">
+
+
+            <div class="card">
+                <div class="card-img">
+                    <img src="../img/afficherPhotoUtilisateur.jpg" alt="User 1">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Nabil Saied</h2>
+                    <p class="card-role">CEO and Founder</p>
+                    <p class="card-email">nabil.saied@ecoles-epsi.net</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img">
+                    <img src="../img/manu.jpg" alt="User 1">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Pedro ataide </h2>
+                    <p class="card-role">CEO and Founder</p>
+                    <p class="card-email">m.dossantosataide@ecoles-epsi.net</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="../img/jordan.jpg" alt="User 2">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Jordan Turnaco</h2>
+                    <p class="card-role">CEO and Founder</p>
+                    <p class="card-email">jordan.turnaco@ecoles-epsi.net</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-img">
+                    <img src="../img/ilyas.png" alt="User 3">
+                </div>
+                <div class="card-info">
+                    <h2 class="card-name">Ilyas Lachgar</h2>
+                    <p class="card-role">CEO and Founder</p>
+                    <p class="card-email">ilyas.lachgar@ecoles-epsi.net</p>
+                    <p><button class="button">Contact</button></p>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 </body>

@@ -14,7 +14,6 @@ try {
     exit;
 }
 
-// Définir la catégorie par défaut comme "tout"
 $category = $_GET['category'] ?? 'tout';
 
 // Fonction pour afficher les produits en fonction de la catégorie
@@ -101,7 +100,8 @@ $products = getProducts($pdo, $category);
 
                         <p><?= htmlspecialchars($product['description']); ?></p>
                         <p><strong>Prix:</strong> €<?= number_format($product['prix'], 2, ',', ' '); ?></p>
-                        <a class="add-to-cart" href="cart.php?action=add&name=<?= urlencode($product['name']); ?>">Ajouter au panier</a>
+                        <a class="add-to-cart" href="cart.php?action=add&name=<?= urlencode($product['name']); ?>">Ajouter au
+                            panier</a>
 
                     </div>
                 <?php endforeach; ?>

@@ -26,20 +26,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Tous les champs doivent être remplis.";
     } else {
         try {
-            // Requête pour obtenir les informations de l'utilisateur
-            $stmt = $conn->prepare("SELECT utilisateur_id_, mot_de_passe FROM utilisateurs WHERE email = :email");
+            // Requête pour obtenir les informations de l'utilisateur (y compris le role_id)
+            $stmt = $conn->prepare("SELECT utilisateur_id_, mot_de_passe, role_id FROM utilisateurs WHERE email = :email");
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
 
             // Vérification si l'utilisateur existe
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);  // On utilise fetch pour récupérer une ligne directement
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user) {
                 // Vérification du mot de passe
                 if (password_verify($password, $user['mot_de_passe'])) {
                     // Authentification réussie, démarrage de la session
                     $_SESSION['utilisateur_id_'] = $user['utilisateur_id_'];
-                    header("Location: index.php");
+                    $_SESSION['role_id'] = $user['role_id'];
+                    if ($user['role_id'] == 1) {
+                        // Si le rôle est client, redirection vers la page admin
+                        header("Location: admin.php");
+                    }
+                    // Redirection en fonction du role_id
+                    else if ($user['role_id'] == 2) {
+                        // Si le rôle est admin, redirection vers la page admin
+                        header("Location: administrateur.php");
+                    } else {
+                        // Sinon, redirection vers la page index (ou une autre page par défaut)
+                        header("Location: index.php");
+                    }
                     exit();
                 } else {
                     $error = "Mot de passe incorrect.";
@@ -55,6 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<!-- HTML Code (rest remains the same) -->
 <!DOCTYPE html>
 <html lang="fr">
 

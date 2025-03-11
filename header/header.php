@@ -1,5 +1,4 @@
 <?php
-// Démarrer la session en premier, avant tout contenu HTML ou espace
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

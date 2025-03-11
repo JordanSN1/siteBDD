@@ -1,67 +1,49 @@
 <?php
-// Activer l'affichage des erreurs pour le débogage
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Inclure la connexion à la base de données
 include("../scripts/conn.php");
 
-// Démarrer la session pour accéder aux variables $_SESSION
 session_start();
 
-$utilisateur_id = $_SESSION['utilisateur_id_']; // Récupérer l'ID utilisateur depuis la session
+$utilisateur_id = $_SESSION['utilisateur_id_'];
 
-// Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Récupérer les données du formulaire
     $titulaire_carte = $_POST['name'] ?? null;
     $numero_carte = $_POST['card_number'] ?? null;
     $type_carte = $_POST['card_type'] ?? null;
     $date_expiration = $_POST['exp_date'] ?? null;
     $cvv = $_POST['cvv'] ?? null;
 
-    // Vérifier que le panier n'est pas vide
     if (empty($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
         die("Le panier est vide. Veuillez ajouter des articles à votre panier.");
     }
 
-    // Insérer une nouvelle commande dans la table commandes
-    $commande_id = null; // On capture l'ID auto-incrémenté
-    $date_commande = date('Y-m-d H:i:s'); // Date actuelle
+    $commande_id = null;
+    $date_commande = date('Y-m-d H:i:s');
 
     try {
-        $conn->beginTransaction(); // Démarrer la transaction
+        $conn->beginTransaction();
 
-        // Insérer la commande
-        $stmtCommande = $conn->prepare("
-            INSERT INTO commandes (utilisateur_id_, date_commande) 
-            VALUES (:utilisateur_id_, :date_commande)
-        ");
-        $stmtCommande->execute([ 
-            ':utilisateur_id_' => $utilisateur_id,
-            ':date_commande' => $date_commande
-        ]);
-        $commande_id = $conn->lastInsertId(); // Capturer l'ID de la commande
+        $commande_id = $conn->lastInsertId();
 
-        // Insérer les détails de la commande
         $stmtDetails = $conn->prepare("
             INSERT INTO commandes_details (commande_id, menu_id, boisson_id, burger_id, quantite, prix_unitaire, utilisateur_id_)
             VALUES (:commande_id, :menu_id, :boisson_id, :burger_id, :quantite, :prix_unitaire, :utilisateur_id_)
         ");
-        
+
         foreach ($_SESSION['cart'] as $item) {
             $stmtDetails->execute([
                 ':commande_id' => $commande_id,
-                ':menu_id' => $item['menu_id'] ?? null, // Assurez-vous d'utiliser l'ID du menu
-                ':boisson_id' => $item['boisson_id'] ?? null, // Si la boisson existe, insérez son ID
-                ':burger_id' => $item['burger_id'] ?? null, // Si le burger existe, insérez son ID
+                ':menu_id' => $item['menu_id'] ?? null,
+                ':boisson_id' => $item['boisson_id'] ?? null,
+                ':burger_id' => $item['burger_id'] ?? null,
                 ':quantite' => $item['quantity'],
                 ':prix_unitaire' => $item['price'],
-                ':utilisateur_id_' => $utilisateur_id // Assurez-vous de lier l'utilisateur
+                ':utilisateur_id_' => $utilisateur_id
             ]);
         }
 
-        // Insérer les informations de transaction
         $stmtTransaction = $conn->prepare("
             INSERT INTO transactions (titulaire_carte, numero_carte, type_carte, date_expiration, cvv, commande_id, utilisateur_id_)
             VALUES (:titulaire_carte, :numero_carte, :type_carte, :date_expiration, :cvv, :commande_id, :utilisateur_id_)
@@ -76,14 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ':utilisateur_id_' => $utilisateur_id
         ]);
 
-        $conn->commit(); // Confirmer la transaction
+        $conn->commit();
 
-        // Rediriger l'utilisateur vers la page success.php après la transaction réussie
         header("Location: success.php");
-        unset($_SESSION['cart']); // Cette ligne vide le panier dans la session
-        exit; // Arrêter l'exécution du script après la redirection
+        unset($_SESSION['cart']);
+        exit;
     } catch (Exception $e) {
-        $conn->rollBack(); // Annuler la transaction en cas d'erreur
+        $conn->rollBack();
         die("Erreur lors de la transaction : " . $e->getMessage());
     }
 }
